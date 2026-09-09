@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,21 +58,20 @@ public static class UiBuilder
 		return img;
 	}
 
-	public static Text Label(string name, Transform parent, string content, int fontSize, Color color, Vector2 size, Vector2 anchored, TextAnchor align = TextAnchor.MiddleCenter)
+	public static TMP_Text Label(string name, Transform parent, string content, int fontSize, Color color, Vector2 size, Vector2 anchored, TextAlignmentOptions align = TextAlignmentOptions.Center)
 	{
-		GameObject go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
+		GameObject go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
 		go.transform.SetParent(parent, false);
 		RectTransform rt = go.GetComponent<RectTransform>();
 		rt.sizeDelta = size;
 		rt.anchoredPosition = anchored;
-		Text text = go.GetComponent<Text>();
-		text.font = DefaultFont();
+		TextMeshProUGUI text = go.GetComponent<TextMeshProUGUI>();
 		text.text = content;
 		text.fontSize = fontSize;
 		text.color = color;
 		text.alignment = align;
-		text.horizontalOverflow = HorizontalWrapMode.Wrap;
-		text.verticalOverflow = VerticalWrapMode.Overflow;
+		text.enableWordWrapping = true;
+		text.overflowMode = TextOverflowModes.Overflow;
 		text.raycastTarget = false;
 		return text;
 	}

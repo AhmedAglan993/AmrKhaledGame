@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -193,9 +194,9 @@ public class GameManager : MonoBehaviour
 		{
 			ScoreManager man = ScoreManager.GetInstance();
 			if (winScore != null)
-				winScore.GetComponent<Text>().text = man.GetScore().ToString();
+				SetLabel(winScore, man.GetScore().ToString());
 			if (winThrows != null)
-				winThrows.GetComponent<Text>().text = man.GetThrows().ToString();
+				SetLabel(winThrows, man.GetThrows().ToString());
 			if (GameFlowController.instance != null)
 				GameFlowController.instance.ShowLevelWin();
 			else
@@ -396,5 +397,20 @@ public class GameManager : MonoBehaviour
 	{
 		Gizmos.color = Color.red;
 		Gizmos.DrawRay(transform.position, Vector2.right * RayDistance);
+	}
+
+	static void SetLabel(GameObject go, string value)
+	{
+		if (go == null)
+			return;
+		TMP_Text tmp = go.GetComponent<TMP_Text>();
+		if (tmp != null)
+		{
+			tmp.text = value;
+			return;
+		}
+		Text label = go.GetComponent<Text>();
+		if (label != null)
+			label.text = value;
 	}
 }

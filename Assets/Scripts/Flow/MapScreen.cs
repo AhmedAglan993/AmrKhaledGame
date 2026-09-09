@@ -1,11 +1,13 @@
 using System.Collections.Generic;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MapScreen : GameScreen
 {
 	public Transform nodesRoot;
-	public Text scoreText;
+	public TMP_Text scoreText;
 	public Sprite nodeOpenSprite;
 	public Sprite nodeCurrentSprite;
 	public Sprite lockIconSprite;
@@ -13,7 +15,7 @@ public class MapScreen : GameScreen
 
 	void Awake()
 	{
-		WireHud();
+		ScreenHud.Wire(transform);
 		if (nodesRoot == null)
 			return;
 		for (int i = 0; i < nodesRoot.childCount; i++)
@@ -85,8 +87,30 @@ public class MapScreen : GameScreen
 		}
 	}
 
-	void WireHud()
+	protected override void PlayShowMotion()
 	{
-		ScreenHud.Wire(transform);
+		UiMotion.Kill(transform);
+		transform.localScale = Vector3.one;
+		RectTransform banner = UiMotion.Find(transform, "TitleBanner");
+		RectTransform score = UiMotion.Find(transform, "ScoreBox");
+		UiMotion.SlideIn(banner, new Vector2(0f, 180f), 0f, 0.4f);
+		UiMotion.SlideIn(score, new Vector2(0f, -160f), 0.05f, 0.4f);
+		UiMotion.StaggerPop(nodesRoot, 0.04f, 0.38f);
+		float idleDelay = nodesRoot != null ? 0.2f + nodesRoot.childCount * 0.04f : 0.4f;
+		DOVirtual.DelayedCall(idleDelay, StartIdleMotion).SetUpdate(true).SetLink(gameObject);
+	}
+
+	protected override void StartIdleMotion()
+	{
+		base.StartIdleMotion();
+		if (nodesRoot == null)
+			return;
+		for (int i = 0; i < nodesRoot.childCount; i++)
+		{
+			RectTransform node = nodesRoot.GetChild(i) as RectTransform;
+			if (node == null || !node.gameObject.activeInHierarchy)
+				continue;
+			UiMotion.IdleBob(node, 8f + (i % 3) * 3f, 1.35f + (i % 4) * 0.12f);
+		}
 	}
 }

@@ -1,10 +1,12 @@
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class VideoScreen : GameScreen
 {
-	public Text placeholderText;
+	public TMP_Text placeholderText;
 	public VideoPlayer videoPlayer;
 	public RawImage videoImage;
 	public RenderTexture videoRt;
@@ -62,6 +64,25 @@ public class VideoScreen : GameScreen
 			videoPlayer.Stop();
 		if (GameFlowController.instance != null)
 			GameFlowController.instance.OnVideoClosed();
+	}
+
+	protected override void PlayShowMotion()
+	{
+		UiMotion.Kill(transform);
+		transform.localScale = Vector3.one;
+		RectTransform image = UiMotion.Find(transform, "VideoImage");
+		if (image != null)
+			UiMotion.Popup(image, 0.38f, null);
+		else
+			UiMotion.FadeIn(gameObject, 0.3f, null);
+		RectTransform close = UiMotion.Find(transform, "CloseVideo");
+		if (close != null)
+		{
+			UiMotion.Prepare(close);
+			close.localScale = Vector3.one * 0.6f;
+			close.DOScale(1f, 0.35f).SetDelay(0.15f).SetEase(Ease.OutBack).SetUpdate(true);
+		}
+		DOVirtual.DelayedCall(0.4f, StartIdleMotion).SetUpdate(true).SetLink(gameObject);
 	}
 
 	void OnFinished(VideoPlayer source)

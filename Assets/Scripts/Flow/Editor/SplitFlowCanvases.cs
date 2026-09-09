@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -162,13 +163,13 @@ public static class SplitFlowCanvases
 		return null;
 	}
 
-	static Text FindText(Transform root, string name)
+	static TMP_Text FindText(Transform root, string name)
 	{
-		Text[] all = root.GetComponentsInChildren<Text>(true);
-		for (int i = 0; i < all.Length; i++)
+		TMP_Text[] tmpAll = root.GetComponentsInChildren<TMP_Text>(true);
+		for (int i = 0; i < tmpAll.Length; i++)
 		{
-			if (all[i].name == name)
-				return all[i];
+			if (tmpAll[i].name == name)
+				return tmpAll[i];
 		}
 		return null;
 	}

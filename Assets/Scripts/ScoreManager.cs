@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,9 +21,15 @@ public class ScoreManager
 		GameObject scoreGo = GameObject.FindWithTag("Score");
 		if (scoreGo == null)
 			return;
+		TMP_Text tmp = scoreGo.GetComponent<TMP_Text>();
+		if (tmp != null)
+		{
+			tmp.text = "SCORE  " + score;
+			return;
+		}
 		Text _score = scoreGo.GetComponent<Text>();
 		if (_score != null)
-			_score.text = "Score: " + score;
+			_score.text = "SCORE  " + score;
 	}
 
 	public void AddScore(int score)

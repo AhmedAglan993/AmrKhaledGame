@@ -29,6 +29,11 @@ public static class ScreenHud
 		}
 	}
 
+	public static void PlayIconIdle(Transform root)
+	{
+		UiMotion.PulseNamed(root, "Home", "Sound", "Pause", "MapBtn", "NextBtn", "RetryBtn", "CloseVideo");
+	}
+
 	static void OnHome()
 	{
 		if (GameFlowController.instance != null)
