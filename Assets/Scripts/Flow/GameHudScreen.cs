@@ -38,8 +38,10 @@ public class GameHudScreen : GameScreen
 		UiMotion.Kill(transform);
 		transform.localScale = Vector3.one;
 		lastScore = int.MinValue;
-		UiMotion.SlideIn(UiMotion.Find(transform, "TopHud"), new Vector2(0f, 180f), 0f, 0.38f);
-		UiMotion.SlideIn(UiMotion.Find(transform, "ScoreBox"), new Vector2(0f, -160f), 0.06f, 0.38f);
-		DOVirtual.DelayedCall(0.4f, StartIdleMotion).SetUpdate(true).SetLink(gameObject);
+		UiMotion.DropIn(UiMotion.Find(transform, "TopHud"), 210f, 0f, 8f);
+		UiMotion.TitlePop(UiMotion.Find(transform, "TitleBanner"), 0.16f);
+		UiMotion.TitlePop(UiMotion.Find(transform, "LevelTitle"), 0.24f);
+		UiMotion.TossIn(UiMotion.Find(transform, "ScoreBox"), -240f, 0.1f);
+		DOVirtual.DelayedCall(0.7f, StartIdleMotion).SetUpdate(true).SetLink(gameObject);
 	}
 }

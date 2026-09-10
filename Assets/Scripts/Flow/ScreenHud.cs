@@ -14,17 +14,20 @@ public static class ScreenHud
 			if (name == "Home")
 			{
 				buttons[i].onClick.RemoveAllListeners();
-				buttons[i].onClick.AddListener(OnHome);
+				Transform target = buttons[i].transform;
+				buttons[i].onClick.AddListener(delegate { UiMotion.Punch(target); OnHome(); });
 			}
 			else if (name == "Sound")
 			{
 				buttons[i].onClick.RemoveAllListeners();
-				buttons[i].onClick.AddListener(OnSound);
+				Transform target = buttons[i].transform;
+				buttons[i].onClick.AddListener(delegate { UiMotion.Punch(target); OnSound(); });
 			}
 			else if (name == "Pause")
 			{
 				buttons[i].onClick.RemoveAllListeners();
-				buttons[i].onClick.AddListener(OnPause);
+				Transform target = buttons[i].transform;
+				buttons[i].onClick.AddListener(delegate { UiMotion.Punch(target); OnPause(); });
 			}
 		}
 	}

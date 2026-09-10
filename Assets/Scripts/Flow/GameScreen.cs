@@ -31,7 +31,7 @@ public class GameScreen : MonoBehaviour
 			StartIdleMotion();
 			return;
 		}
-		UiMotion.Popup(root, 0.42f, StartIdleMotion);
+		UiMotion.JellyPopup(root, 0f, 0.5f, StartIdleMotion);
 	}
 
 	protected virtual void StartIdleMotion()

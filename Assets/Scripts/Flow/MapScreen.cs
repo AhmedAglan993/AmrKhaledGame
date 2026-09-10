@@ -93,10 +93,11 @@ public class MapScreen : GameScreen
 		transform.localScale = Vector3.one;
 		RectTransform banner = UiMotion.Find(transform, "TitleBanner");
 		RectTransform score = UiMotion.Find(transform, "ScoreBox");
-		UiMotion.SlideIn(banner, new Vector2(0f, 180f), 0f, 0.4f);
-		UiMotion.SlideIn(score, new Vector2(0f, -160f), 0.05f, 0.4f);
-		UiMotion.StaggerPop(nodesRoot, 0.04f, 0.38f);
-		float idleDelay = nodesRoot != null ? 0.2f + nodesRoot.childCount * 0.04f : 0.4f;
+		UiMotion.DropIn(banner, 220f, 0f, -12f);
+		UiMotion.TitlePop(UiMotion.Find(transform, "BannerTitle"), 0.18f);
+		UiMotion.TossIn(score, -240f, 0.08f);
+		UiMotion.StaggerDrop(nodesRoot, 0.05f);
+		float idleDelay = nodesRoot != null ? 0.55f + nodesRoot.childCount * 0.05f : 0.7f;
 		DOVirtual.DelayedCall(idleDelay, StartIdleMotion).SetUpdate(true).SetLink(gameObject);
 	}
 
@@ -110,7 +111,10 @@ public class MapScreen : GameScreen
 			RectTransform node = nodesRoot.GetChild(i) as RectTransform;
 			if (node == null || !node.gameObject.activeInHierarchy)
 				continue;
-			UiMotion.IdleBob(node, 8f + (i % 3) * 3f, 1.35f + (i % 4) * 0.12f);
+			float squash = 0.06f + (i % 3) * 0.02f;
+			float bob = 10f + (i % 4) * 4f;
+			float wiggle = (i % 2 == 0) ? 7f : -7f;
+			UiMotion.FunnyIdle(node, squash, bob, wiggle, 1.05f + (i % 5) * 0.1f);
 		}
 	}
 }

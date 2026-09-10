@@ -75,10 +75,16 @@ public class QuestionScreen : GameScreen
 			if (i == correctIndex)
 			{
 				answerStars[i].color = Color.white;
-				UiMotion.Punch(answerStars[i].transform);
+				UiMotion.PopStar(answerStars[i].rectTransform, 0f);
+				if (answerButtons[i] != null)
+					answerButtons[i].transform.DOPunchRotation(new Vector3(0f, 0f, 14f), 0.4f, 10, 0.6f).SetUpdate(true);
 			}
 			else if (i == selectedIndex)
+			{
 				answerStars[i].color = new Color(1f, 0.4f, 0.4f);
+				if (answerButtons[i] != null)
+					answerButtons[i].transform.DOShakeRotation(0.35f, new Vector3(0f, 0f, 16f), 12, 90f, true).SetUpdate(true);
+			}
 			else
 				answerStars[i].color = new Color(1f, 1f, 1f, 0.2f);
 		}
@@ -88,27 +94,28 @@ public class QuestionScreen : GameScreen
 	{
 		UiMotion.Kill(transform);
 		transform.localScale = Vector3.one;
-		UiMotion.SlideIn(UiMotion.Find(transform, "TopHud") ?? UiMotion.Find(transform, "TopHud (1)"), new Vector2(0f, 160f), 0f, 0.35f);
-		UiMotion.SlideIn(UiMotion.Find(transform, "ScoreBox"), new Vector2(0f, -140f), 0.04f, 0.35f);
+		UiMotion.DropIn(UiMotion.Find(transform, "TopHud") ?? UiMotion.Find(transform, "TopHud (1)"), 200f, 0f, 8f);
+		UiMotion.TitlePop(UiMotion.Find(transform, "LevelTitle"), 0.12f);
+		UiMotion.TossIn(UiMotion.Find(transform, "ScoreBox"), -220f, 0.06f);
+		UiMotion.TitlePop(UiMotion.Find(transform, "Progress"), 0.2f);
 		RectTransform card = UiMotion.Find(transform, "ChallengeCard");
 		if (card != null)
-			UiMotion.Popup(card, 0.4f, null);
+			UiMotion.JellyPopup(card, 0.08f, 0.5f, null);
+		UiMotion.TitlePop(UiMotion.Find(transform, "ChallengeLabel"), 0.22f);
+		RectTransform body = UiMotion.Find(transform, "QuestionBody");
+		if (body != null)
+			UiMotion.TitlePop(body, 0.3f);
 		if (answerButtons != null)
 		{
 			for (int i = 0; i < answerButtons.Length; i++)
 			{
 				if (answerButtons[i] == null)
 					continue;
-				RectTransform rt = answerButtons[i].transform as RectTransform;
-				UiMotion.Prepare(rt);
-				Vector2 dest = rt.anchoredPosition;
-				rt.anchoredPosition = dest + new Vector2(0f, -80f);
-				rt.localScale = Vector3.one * 0.85f;
-				rt.DOAnchorPos(dest, 0.32f).SetDelay(0.12f + i * 0.07f).SetEase(Ease.OutCubic).SetUpdate(true);
-				rt.DOScale(1f, 0.32f).SetDelay(0.12f + i * 0.07f).SetEase(Ease.OutBack).SetUpdate(true);
+				float fromX = (i % 2 == 0) ? -420f : 420f;
+				UiMotion.TossIn(answerButtons[i].transform as RectTransform, fromX, 0.22f + i * 0.09f);
 			}
 		}
-		DOVirtual.DelayedCall(0.55f, StartIdleMotion).SetUpdate(true).SetLink(gameObject);
+		DOVirtual.DelayedCall(0.85f, StartIdleMotion).SetUpdate(true).SetLink(gameObject);
 	}
 
 	void OnAnswerClicked(int index)

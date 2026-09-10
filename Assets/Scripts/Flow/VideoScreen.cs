@@ -72,17 +72,23 @@ public class VideoScreen : GameScreen
 		transform.localScale = Vector3.one;
 		RectTransform image = UiMotion.Find(transform, "VideoImage");
 		if (image != null)
-			UiMotion.Popup(image, 0.38f, null);
+			UiMotion.SqueezeIn(image, 0.05f);
 		else
-			UiMotion.FadeIn(gameObject, 0.3f, null);
+			UiMotion.FadeIn(gameObject, 0.25f, null);
+		UiMotion.JellyPopup(UiMotion.Find(transform, "VideoBg"), 0f, 0.42f, null);
 		RectTransform close = UiMotion.Find(transform, "CloseVideo");
 		if (close != null)
 		{
 			UiMotion.Prepare(close);
-			close.localScale = Vector3.one * 0.6f;
-			close.DOScale(1f, 0.35f).SetDelay(0.15f).SetEase(Ease.OutBack).SetUpdate(true);
+			close.localScale = Vector3.zero;
+			close.localEulerAngles = new Vector3(0f, 0f, -80f);
+			Sequence closeSeq = DOTween.Sequence().SetUpdate(true).SetLink(close.gameObject).SetDelay(0.2f);
+			closeSeq.Append(close.DOScale(1.18f, 0.32f).SetEase(Ease.OutBack, 2.2f));
+			closeSeq.Join(close.DOLocalRotate(Vector3.zero, 0.4f).SetEase(Ease.OutElastic));
+			closeSeq.Append(close.DOScale(1f, 0.12f).SetEase(Ease.OutQuad));
 		}
-		DOVirtual.DelayedCall(0.4f, StartIdleMotion).SetUpdate(true).SetLink(gameObject);
+		UiMotion.TitlePop(UiMotion.Find(transform, "Label"), 0.28f);
+		DOVirtual.DelayedCall(0.65f, StartIdleMotion).SetUpdate(true).SetLink(gameObject);
 	}
 
 	void OnFinished(VideoPlayer source)
